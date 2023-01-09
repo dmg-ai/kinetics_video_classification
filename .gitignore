@@ -1,0 +1,11 @@
+data/*
+wandb
+video_venv
+
+*.ipynb*
+__pycache__
+.DS*
+*.pth
+
+!video_classification.ipynb
+!.gitkeep

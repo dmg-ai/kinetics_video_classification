@@ -6,6 +6,8 @@ video_venv
 __pycache__
 .DS*
 *.pth
+*.mp4
 
 !video_classification.ipynb
+!image_classification.ipynb
 !.gitkeep

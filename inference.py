@@ -14,7 +14,6 @@ from src.prediction import predict_label
 
 parser = argparse.ArgumentParser(description='Video classification Inference with CnnResnet model')
 
-# export directory, training and val datasets, test datasets
 parser.add_argument('--model-path', 
     default='experiments/exp1/checkpoints/checkpoint_0.7121046892039259_1ep.pth', type = str,
     help = 'Path to folder with model checkpoint.'
@@ -26,6 +25,9 @@ parser.add_argument('--videopath',
 parser.add_argument('--save-frames-path', default = 'inference_frames', type = str,
     help = 'Path to save frames croped from video.'
 )
+parser.add_argument('--rm-frames', default = True, type = bool,
+    help = 'Flag to delete frames at the end or not.'
+)
 parser.add_argument('--start-time', type = int,
     help = 'Start time to cut video in seconds.'
 )
@@ -35,8 +37,6 @@ parser.add_argument('--end-time', type = int,
 parser.add_argument('--duration', type = int,
     help = 'Duration from start time to cut video in seconds.'
 )
-
-args = parser.parse_args()
 
 
 def cut_video(args):
@@ -60,6 +60,8 @@ def cut_video(args):
 
 
 if __name__ == "__main__":
+    args = parser.parse_args()
+    
     model = torch.load(args.model_path, map_location='cpu')
 
     args.videopath = cut_video(args)
@@ -83,4 +85,5 @@ if __name__ == "__main__":
 
     print(f"\n\033[93mPredicted Label\033[0m: \033[92m{pred_label}\033[0m")
 
-    shutil.rmtree(args.save_frames_path)
+    if args.rm_frames:
+        shutil.rmtree(args.save_frames_path)

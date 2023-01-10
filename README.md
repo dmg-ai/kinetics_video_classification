@@ -32,6 +32,13 @@
 
 Также был написан скрипт `src/load_videos.py`, с помощью которого можно сразу загрузить и разделить видео на необходимые классы и в необходимые папки. Для этого в функцию `create_sample()` передается тип данных: `train` или `val` (возможность загрузить видео из `test`-выборки на данный отсутствует, так как там находятся данные без разметки) - а также размер видео на каждый класс (одинаково для каждого класса) `sample_size` и пути `path_to_data` - путь до csv- и json-файлов - и `path_to_save` - путь сохранения видео.
 
+```
+create_sample(mode='val', 
+              sample_size=5,
+              path_to_data='/Users/dmitry/Desktop/cv_itmo/video_classification/data',
+              path_to_save='/Users/dmitry/Desktop/cv_itmo/video_classification/data')
+```
+
 ![video_loading](docs/video_loading.png)
 
 Также сохраняются csv-файлы с информацией о скачанных видео, которая может пригодится для выделения нужного фрагмента видео.

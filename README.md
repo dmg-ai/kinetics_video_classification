@@ -66,8 +66,10 @@ crop_images(path, cut_folder='cut_videos')
 
 В итоге структура папки с данными имеет следующий вид (аналогично для `train` и `test`):
 
-![test_folder.png](docs/test_folder.png)
 
+<p align="left">
+  <img src="docs/test_folder.png" width=200 height=330 />
+</p>
 
 ## Model
 

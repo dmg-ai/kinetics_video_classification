@@ -16,10 +16,10 @@ def natural_keys(text):
 def predict_label(model, folder_path, timestamps, test_transforms, inference_mode=False):
     folder_frames = [os.path.join(folder_path, frame) for frame in os.listdir(folder_path)]
     folder_frames.sort(key=natural_keys)
-    steps = len(folder_frames)//4 # if folder contains 19 frames we take the first 16 frames
+    steps = len(folder_frames)//4 # if folder for example contains 19 frames we take the first 16 frames
 
     if not inference_mode:
-        true_label = int(folder_frames[0].split('/')[2])
+        true_label = int(folder_frames[0].split('/')[3])
 
     pred_labels = []
     for i in range(steps): # predict by 4 frames
@@ -43,7 +43,7 @@ def predict_label(model, folder_path, timestamps, test_transforms, inference_mod
         pred_label = pred.argmax(dim=1).item() # get label
         pred_labels.append(pred_label)
 
-    pred_label = round(np.mean(pred_labels)) # average and round all predictions for one folder: [0,1,1] -> 1
+    pred_label = max(set(pred_labels), key=pred_labels.count) # get most common label from all pred labels
     
     if inference_mode:
         return pred_label

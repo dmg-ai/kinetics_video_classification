@@ -1,25 +1,31 @@
-import os
 import datetime
+import os
+import re
 
 import pandas as pd
+from tqdm import tqdm
 
 
 def cut_video(sample, path_to_videofolder):
-    os.makedirs(os.path.join(path_to_videofolder,'cut_videos/videos/'))
+    endpath = os.path.join(path_to_videofolder,'cut_videos/')
+    os.makedirs(endpath,exist_ok=True)
+    path_to_videofolder = os.path.join(path_to_videofolder, 'video')
     for i in range(len(sample)):
         obj = sample.loc[i]
-        videopath = os.path.join(path_to_videofolder, f"{obj['title']}.mp4")
-        endpath = os.path.join(path_to_videofolder, f'cut_videos/videos/{obj["title"]}.mp4')
+        if obj['title'] != 'NaN':
+            videopath = os.path.join(path_to_videofolder, obj['title'])
+            savepath = os.path.join(endpath, obj["title"])
 
-        start = str(datetime.timedelta(seconds=int(obj['time_start'])))
-        end = str(datetime.timedelta(seconds=int(obj['time_end'])))
-        cmd = f'ffmpeg -ss {start} -to {end} -i "{videopath}" -c copy "{endpath}"'
-        os.system(cmd)
+            start = str(datetime.timedelta(seconds=int(obj['time_start'])))
+            end = str(datetime.timedelta(seconds=int(obj['time_end'])))
+            cmd = f'ffmpeg -ss {start} -to {end} -i "{videopath}" -c copy "{savepath}"'
+            os.system(cmd)
 
 if __name__ == "__main__":
-    path = '/Users/dmitry/Desktop/cv_itmo/video_classification/data/train'
-    dancing = pd.read_csv(os.path.join(path, 'sample_dancing.csv'))
-    other = pd.read_csv(os.path.join(path,'sample_other.csv'))
+    path = '/Users/dmitry/Desktop/cv_itmo/kinetics_video_classification/data/dancing_classes/val'
 
-    cut_video(dancing, os.path.join(path,'1/video/'))
-    cut_video(other, os.path.join(path, '0/video/'))
+    for class_csv in tqdm([i for i in os.listdir(path) if i.endswith('.csv')]):
+        data = pd.read_csv(os.path.join(path,class_csv))
+        data['title'] = data['title'].fillna('NaN')
+        class_num = re.findall(r'\d+', class_csv)[0]
+        cut_video(data, os.path.join(path,class_num))

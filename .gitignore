@@ -8,6 +8,8 @@ __pycache__
 *.pth
 *.mp4
 
-!video_classification.ipynb
-!image_classification.ipynb
+!binary_video_classification.ipynb
+!binary_image_classification.ipynb
+!dancing_video_classification.ipynb
+!dancing_image_classification.ipynb
 !.gitkeep
